@@ -1,0 +1,76 @@
+---ESTRAI TUTTI I CLIENTI CON NOME 'MARIO':
+
+SELECT * FROM public.clienti WHERE nome='Mario';
+
+
+
+
+
+---ESTRARRE IL NOME E IL COGNOME DEI CLIENTI NATI NEL 1982
+
+SELECT * FROM public.clienti WHERE anno_di_nascita=1982 ;
+
+
+
+
+
+
+---ESTRARRE IL NUMERO DELLE FATTURE CON IVA AL 20%
+
+SELECT numero_fattura FROM public.fatture WHERE iva=20.00;
+
+
+
+
+
+---ESTRARRE I PRODOTTI ATTIVATI NEL 2017 E CHE SONO IN PRODUZIONE OPPURE IN COMMERCIO
+
+SELECT * FROM public.prodotti WHERE EXTRACT(YEAR FROM data_attivazione)=2017  ;
+
+
+
+
+
+---ESTRARRE LE FATTURE CON IMPORTO INFERIORE A 1000 E I DATI DEI CLIENTI AD ESSE COLLEGATE
+
+SELECT * FROM public.fatture a   INNER JOIN public.clienti b ON a.id_cliente = b.numero_cliente WHERE importo<1000;
+
+
+
+
+
+
+---RIPORTARE L'ELENCO DELLE FATTURE(NUMERO, IMPORTO, IVA E DATA) CON IN AGGIUNTA IL NUMERO DEL FORNITORE
+
+
+
+
+
+
+---considerando soltanto le fatture con iva al 20% , estrarre il numero di fatture per ogni anno
+
+SELECT 
+EXTRACT(YEAR FROM data_fattura) AS anno_fatturazione,
+COUNT(numero_fattura) AS numero_fatture
+FROM public.fatture
+WHERE iva=20.00
+GROUP BY 
+EXTRACT(YEAR FROM data_fattura);
+
+
+
+
+
+
+---RIPORTARE IL NUMERO DI FATTURE E LA SOMMA DEI RELATIVI IMPORTI DIVISI PER ANNO DI FATTURAZIONE
+
+
+SELECT 
+    EXTRACT(YEAR FROM data_fattura) AS anno_fatturazione,
+    COUNT(numero_fattura) AS numero_fatture,
+    SUM(importo) AS somma_importi
+	FROM public.fatture
+
+	GROUP BY 
+    EXTRACT(YEAR FROM data_fattura);
+
